@@ -1,0 +1,320 @@
+1. Design a Data Warehouse for IPL Cricket Tournament
+
+
+ Here's an overview of the data warehouse design for IPL Cricket Tournament:
+
+ Data Sources: IPL cricket tournament data can be collected from various sources like  scorecards, match reports, social media, etc. All these sources can be integrated into a data  integration platform, which can transform the data into a unified format.
+
+ Data Storage: The data can be stored in a centralised data storage platform like a data lake  or a data warehouse. Since data warehouse is specifically designed for analytics and  reporting purposes, we will go ahead with the data warehouse approach.
+
+ Data Model: A star schema can be used to model the data warehouse. A star schema consists of  a fact table that holds the measures and dimensions tables that provide context to the  measures. For the IPL cricket tournament, the fact table can be "Match Results" that holds  the measures like runs, wickets, overs, etc. The dimensions tables can be "Match", "Team",  "Player", "Venue", etc.
+
+ ETL Process: Extract, Transform, and Load (ETL) process can be used to extract data from the  sources, transform it into a unified format and load it into the data warehouse. The ETL  process can be automated using tools like Apache Airflow, which can schedule and monitor the  ETL workflows.
+
+ Reporting and Analytics: Once the data is loaded into the data warehouse, various reporting  and analytics tools can be used to generate insights and reports. Tools like Tableau,  PowerBI, and QlikView can be used to create visualizations and dashboards that can help the  IPL management team to make informed decisions.
+
+ Maintenance and Optimization: Regular maintenance and optimization of the data warehouse can  ensure that the system is performing optimally. Techniques like indexing, partitioning, and  caching can be used to improve the query performance. Regular backups and disaster recovery  plans can also be put in place to ensure data safety and availability.
+
+ This is a high-level overview of the data warehouse design for IPL cricket tournament. Based  on the specific requirements and data sources, the design can be further refined and  customized.
+
+
+ The following tables can be used to model the data warehouse:
+
+  1.1. Match Results Fact Table:
+
+  match_id: unique identifier for each match
+  team_id: unique identifier for each team
+  player_id: unique identifier for each player
+  venue_id: unique identifier for each venue
+  runs: total runs scored by a team in a match
+  wickets: total wickets taken by a team in a match
+  overs: total overs bowled by a team in a match
+  extras: total extra runs conceded by a team in a match
+  result: the result of a match (win, loss, draw)
+  man_of_match: the player who was awarded man of the match in a match
+  date: the date on which the match was played
+ 1.2. Match Dimension Table:
+
+  match_id: unique identifier for each match
+  match_type: the type of match (league, knockout, final)
+  season: the season in which the match was played
+  city: the city in which the match was played
+  toss_winner: the team that won the toss in a match
+  toss_decision: the decision taken by the toss winner (bat or bowl)
+ 1.3. Team Dimension Table:
+
+  team_id: unique identifier for each team
+  team_name: the name of the team
+  team_city: the city in which the team is based
+ 1.4. Player Dimension Table:
+
+  player_id: unique identifier for each player
+  player_name: the name of the player
+  player_type: the type of player (batsman, bowler, all-rounder)
+  player_country: the country to which the player belongs
+ 1.5. Venue Dimension Table:
+
+  venue_id: unique identifier for each venue
+  venue_name: the name of the venue
+  venue_city: the city in which the venue is located
+ Sample Queries:
+ The following are some sample queries that can be run on the IPL cricket tournament data  warehouse:
+
+ 2.1. Query to get the total runs scored by a team in a match:
+
+ SELECT m.match_id, t.team_name, f.runs
+ FROM match_results f
+ JOIN match_dim t ON f.team_id = t.team_id
+ JOIN match_dim m ON f.match_id = m.match_id
+ WHERE m.match_id = '1234';
+
+ 2.2. Query to get the number of matches played by a team in a season:
+
+ SELECT t.team_name, m.season, COUNT(*) AS num_matches
+ FROM match_dim m
+ JOIN match_results f ON m.match_id = f.match_id
+ JOIN team_dim t ON f.team_id = t.team_id
+ WHERE t.team_name = 'Mumbai Indians' AND m.season = '2021'
+ GROUP BY t.team_name, m.season;
+
+ 2.3. Query to get the top 5 players with the highest batting average:
+
+ SELECT p.player_name, AVG(f.runs) AS batting_average
+ FROM match_results f
+ JOIN player_dim p ON f.player_id = p.player_id
+ WHERE p.player_type = 'batsman'
+ GROUP BY p.player_name
+ ORDER BY batting_average DESC
+ LIMIT 5;
+
+ 2.4. Query to get the number of matches won by a team in a season:
+
+ SELECT t.team_name, m.season, COUNT(*) AS num_wins
+ FROM match_dim m
+ JOIN match_results f ON m.match_id = f.match_id
+ JOIN team_dim t ON f.team_id
+
+
+2. Design a Data Warehouse for Food delivery app like Swiggy, Zomato
+
+ In same way as above we can design a data warehouse for food delivery app like swiggy,  zomato.
+ 
+
+ The following tables can be used to model the data warehouse:
+
+ 1.1. Orders Fact Table:
+
+  order_id: unique identifier for each order
+  user_id: unique identifier for each user
+  restaurant_id: unique identifier for each restaurant
+  delivery_partner_id: unique identifier for each delivery partner
+  order_total: total amount of the order
+  order_status: the status of the order (placed, confirmed, delivered, cancelled)
+  order_date: the date and time when the order was placed
+ 1.2. Orders Dimension Table:
+
+  order_id: unique identifier for each order
+  user_id: unique identifier for each user
+  restaurant_id: unique identifier for each restaurant
+  delivery_partner_id: unique identifier for each delivery partner
+  order_total: total amount of the order
+  order_status: the status of the order (placed, confirmed, delivered, cancelled)
+  order_date: the date and time when the order was placed
+  payment_mode: the mode of payment used for the order
+  delivery_address: the address where the order is to be delivered
+ 1.3. Users Dimension Table:
+
+  user_id: unique identifier for each user
+  user_name: the name of the user
+  user_email: the email address of the user
+  user_phone: the phone number of the user
+  user_city: the city where the user is located
+ 1.4. Restaurants Dimension Table:
+
+  restaurant_id: unique identifier for each restaurant
+  restaurant_name: the name of the restaurant
+  restaurant_city: the city where the restaurant is located
+  restaurant_cuisine: the type of cuisine offered by the restaurant
+  restaurant_rating: the rating of the restaurant
+ 1.5. Delivery Partners Dimension Table:
+
+  delivery_partner_id: unique identifier for each delivery partner
+  delivery_partner_name: the name of the delivery partner
+  delivery_partner_vehicle: the type of vehicle used by the delivery partner (bike, car, etc.)
+  delivery_partner_rating: the rating of the delivery partner
+ Sample Queries:
+ The following are some sample queries that can be run on the food delivery app data  warehouse:
+
+ 2.1. Query to get the total revenue generated by the app in a specific time period:
+
+ SELECT SUM(order_total) AS total_revenue
+ FROM orders_fact
+ WHERE order_date BETWEEN '2022-01-01' AND '2022-03-31';
+ 2.2. Query to get the top 5 restaurants with the highest ratings:
+
+ SELECT restaurant_name, restaurant_rating
+ FROM restaurants_dim
+ ORDER BY restaurant_rating DESC
+ LIMIT 5;
+ 2.3. Query to get the average delivery time for completed orders:
+
+ SELECT AVG(TIMESTAMPDIFF(MINUTE, order_date, order_delivered_date)) AS avg_delivery_time
+ FROM orders_dim
+ WHERE order_status = 'delivered';
+ 2.4. Query to get the total number of orders placed by a specific user:
+
+ SELECT COUNT(*) AS num_orders
+ FROM orders_dim
+ WHERE user_id = '12345';
+
+
+3. Design a Data Warehouse for cab ride service like Uber, Lyft
+
+	The following tables can be used to model the data warehouse:
+
+	1.1. Rides Fact Table:
+
+	ride_id: unique identifier for each ride
+	user_id: unique identifier for each user
+	driver_id: unique identifier for each driver
+	ride_start_time: the date and time when the ride started
+	ride_end_time: the date and time when the ride ended
+	ride_duration: the duration of the ride in minutes
+	ride_distance: the distance of the ride in kilometers
+	ride_amount: the total fare amount of the ride
+	ride_status: the status of the ride (completed, cancelled, ongoing)
+	1.2. Rides Dimension Table:
+
+	ride_id: unique identifier for each ride
+	user_id: unique identifier for each user
+	driver_id: unique identifier for each driver
+	ride_start_time: the date and time when the ride started
+ 	ride_end_time: the date and time when the ride ended
+	ride_duration: the duration of the ride in minutes
+	ride_distance: the distance of the ride in kilometers
+	ride_amount: the total fare amount of the ride
+	ride_status: the status of the ride (completed, cancelled, ongoing)
+	pickup_location: the location where the ride started
+	dropoff_location: the location where the ride ended
+	1.3. Users Dimension Table:
+
+	user_id: unique identifier for each user
+	user_name: the name of the user
+	user_email: the email address of the user
+	user_phone: the phone number of the user
+	user_city: the city where the user is located
+	1.4. Drivers Dimension Table:
+
+	driver_id: unique identifier for each driver
+	driver_name: the name of the driver
+	driver_email: the email address of the driver
+	driver_phone: the phone number of the driver
+	driver_city: the city where the driver is located
+	driver_rating: the rating of the driver
+	driver_vehicle: the type of vehicle used by the driver (car, bike, etc.)
+	Sample Queries:
+	The following are some sample queries that can be run on the cab ride service data 	warehouse:
+
+	2.1. Query to get the total revenue generated by the service in a specific time 	period:
+
+	SELECT SUM(ride_amount) AS total_revenue
+	FROM rides_fact
+	WHERE ride_end_time BETWEEN '2022-01-01' AND '2022-03-31';
+	2.2. Query to get the top 5 drivers with the highest ratings:
+
+	SELECT driver_name, driver_rating
+	FROM drivers_dim
+	ORDER BY driver_rating DESC
+	LIMIT 5;
+	2.3. Query to get the average ride duration for completed rides:
+
+	SELECT AVG(ride_duration) AS avg_ride_duration
+	FROM rides_dim
+	WHERE ride_status = 'completed';
+	2.4. Query to get the total number of rides completed by a specific user:
+
+	SELECT COUNT(*) AS num_rides
+	FROM rides_dim
+	WHERE user_id = '12345' AND ride_status = 'completed';
+
+4. Design a Data Warehouse for Restaurent table booking app like Dineout
+
+	The following tables can be used to model the data warehouse:
+
+	1.1. Reservations Fact Table:
+
+	reservation_id: unique identifier for each reservation
+	user_id: unique identifier for each user
+	restaurant_id: unique identifier for each restaurant
+	reservation_date: the date when the reservation was made
+	reservation_time: the time when the reservation is scheduled
+	num_guests: the number of guests for the reservation
+	reservation_status: the status of the reservation (confirmed, cancelled, completed)
+	1.2. Reservations Dimension Table:
+
+	reservation_id: unique identifier for each reservation
+	user_id: unique identifier for each user
+	restaurant_id: unique identifier for each restaurant
+	reservation_date: the date when the reservation was made
+	reservation_time: the time when the reservation is scheduled
+	num_guests: the number of guests for the reservation
+	reservation_status: the status of the reservation (confirmed, cancelled, completed)
+	user_name: the name of the user
+	user_email: the email address of the user
+	restaurant_name: the name of the restaurant
+	restaurant_location: the location of the restaurant
+	table_number: the table number assigned to the reservation
+	1.3. Users Dimension Table:
+
+	user_id: unique identifier for each user
+	user_name: the name of the user
+	user_email: the email address of the user
+	user_phone: the phone number of the user
+	1.4. Restaurants Dimension Table:
+
+	restaurant_id: unique identifier for each restaurant
+	restaurant_name: the name of the restaurant
+	restaurant_location: the location of the restaurant
+	restaurant_phone: the phone number of the restaurant
+	restaurant_cuisine: the cuisine offered by the restaurant
+	restaurant_rating: the rating of the restaurant
+
+
+5. Design a Data Warehouse for Covid Vaccination Application
+
+	The following tables can be used to model the data warehouse:
+
+	1.1. Vaccination Fact Table:
+
+	vaccination_id: unique identifier for each vaccination event
+	user_id: unique identifier for each user
+	vaccination_date: the date when the vaccination was administered
+	vaccination_time: the time when the vaccination was administered
+	vaccine_name: the name of the vaccine administered
+	vaccine_manufacturer: the manufacturer of the vaccine administered
+	vaccination_location: the location where the vaccination was administered
+	vaccination_status: the status of the vaccination (completed, cancelled, rescheduled)
+	1.2. Vaccination Dimension Table:
+
+	vaccination_id: unique identifier for each vaccination event
+	user_id: unique identifier for each user
+	vaccination_date: the date when the vaccination was administered
+	vaccination_time: the time when the vaccination was administered
+	vaccine_name: the name of the vaccine administered
+	vaccine_manufacturer: the manufacturer of the vaccine administered
+	vaccination_location: the location where the vaccination was administered
+	vaccination_status: the status of the vaccination (completed, cancelled, rescheduled)
+	user_name: the name of the user
+	user_email: the email address of the user
+	user_phone: the phone number of the user
+	1.3. Users Dimension Table:
+
+	user_id: unique identifier for each user
+	user_name: the name of the user
+	user_email: the email address of the user
+	user_phone: the phone number of the user
+	user_age: the age of the user
+	user_gender: the gender of the user
+	user_address: the address of the user
+
+ 
